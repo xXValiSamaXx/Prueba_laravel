@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -43,100 +44,84 @@ class OrderStockTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-        $this->assertEquals(8, $product->fresh()->stock);
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 8]);
     }
 
     public function test_cannot_order_more_than_stock()
     {
-        $product = Product::create([
-            'name' => 'Low Stock Product',
-            'sku' => 'TEST-002',
-            'price' => 100,
-            'stock' => 5,
-            'category' => 'Electronics'
-        ]);
-
-        $customer = Customer::create([
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
-            'phone' => '0987654321'
-        ]);
+        $product = Product::factory()->create(['stock' => 5]);
+        $customer = Customer::factory()->create();
 
         $response = $this->postJson('/api/orders', [
             'customer_id' => $customer->id,
             'order_date' => now()->toDateString(),
+            'status' => 'Pendiente',
             'items' => [
                 ['product_id' => $product->id, 'quantity' => 6]
             ]
         ]);
 
-        $response->assertStatus(422); // Validation error
-        $this->assertEquals(5, $product->fresh()->stock);
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['items']);
+        
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 5]);
     }
 
     public function test_order_update_recalculates_stock()
     {
-        $product = Product::create([
-            'name' => 'Update Product',
-            'sku' => 'TEST-003',
-            'price' => 100,
-            'stock' => 10,
-            'category' => 'Electronics'
+        $product = Product::factory()->create(['stock' => 10]);
+        $customer = Customer::factory()->create();
+        
+        // Initial order: 2 items. Remaining stock: 8
+        $order = Order::create([
+            'customer_id' => $customer->id,
+            'order_date' => now(),
+            'status' => 'Pendiente',
+            'total_amount' => 100
         ]);
+        
+        // Use logic similar to controller to set initial state correctly if factory not used fully
+        $product->decrement('stock', 2);
+        OrderItem::create(['order_id' => $order->id, 'product_id' => $product->id, 'quantity' => 2, 'unit_price' => 50, 'subtotal' => 100]);
 
-        $customer = Customer::create(['name' => 'Test', 'email' => 't@t.com', 'phone' => '123']);
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 8]);
 
-        // Create initial order with 2 items. Stock should be 8.
-        $orderResponse = $this->postJson('/api/orders', [
+        // Update order: Change quantity to 5.
+        // Logic: Restore 2 (Sock=10). Deduct 5 (Stock=5).
+        $response = $this->putJson("/api/orders/{$order->id}", [
             'customer_id' => $customer->id,
             'order_date' => now()->toDateString(),
-            'items' => [
-                ['product_id' => $product->id, 'quantity' => 2]
-            ]
-        ]);
-
-        $orderId = $orderResponse->json('id');
-
-        // Update order to 5 items. 
-        // Logic: Restore 2 (Stock=10). Deduct 5 (Stock=5).
-        $this->putJson("/api/orders/{$orderId}", [
-            'customer_id' => $customer->id,
-            'order_date' => now()->toDateString(),
+            'status' => 'Pendiente',
             'items' => [
                 ['product_id' => $product->id, 'quantity' => 5]
             ]
-        ])->assertStatus(200);
+        ]);
 
-        $this->assertEquals(5, $product->fresh()->stock);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'stock' => 5]);
     }
 
     public function test_order_deletion_restores_stock()
     {
-        $product = Product::create([
-            'name' => 'Delete Product',
-            'sku' => 'TEST-004',
-            'price' => 100,
-            'stock' => 10,
-            'category' => 'Electronics'
-        ]);
-
-        $customer = Customer::create(['name' => 'Test', 'email' => 't@t.com', 'phone' => '123']);
-
-        // Create order with 3 items. Stock -> 7.
-        $orderResponse = $this->postJson('/api/orders', [
+        $product = Product::factory()->create(['stock' => 10]);
+        $customer = Customer::factory()->create();
+        
+        // Create order with 3 items. Stock becomes 7.
+        $order = Order::create([
             'customer_id' => $customer->id,
-            'order_date' => now()->toDateString(),
-            'items' => [
-                ['product_id' => $product->id, 'quantity' => 3]
-            ]
+            'order_date' => now(),
+            'status' => 'Pendiente',
+            'total_amount' => 150
         ]);
+        $product->decrement('stock', 3);
+        OrderItem::create(['order_id' => $order->id, 'product_id' => $product->id, 'quantity' => 3, 'unit_price' => 50, 'subtotal' => 150]);
 
-        $orderId = $orderResponse->json('id');
         $this->assertEquals(7, $product->fresh()->stock);
 
-        // Delete order. Stock -> 10.
-        $this->deleteJson("/api/orders/{$orderId}")->assertStatus(200);
+        $response = $this->deleteJson("/api/orders/{$order->id}");
 
+        $response->assertStatus(200);
+        // Stock should be restored to 10
         $this->assertEquals(10, $product->fresh()->stock);
     }
 }

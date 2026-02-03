@@ -29,24 +29,15 @@ const formatCurrency = (value) => {
 
 const getStatusClass = (status) => {
     switch (status) {
-        case 'paid':
+        case 'Pagado':
             return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
-        case 'pending':
+        case 'Pendiente':
             return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
-        case 'cancelled':
+        case 'Cancelado':
             return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
         default:
             return 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400';
     }
-};
-
-const getStatusLabel = (status) => {
-    const labels = {
-        'pending': 'Pendiente',
-        'paid': 'Pagado',
-        'cancelled': 'Cancelado'
-    };
-    return labels[status] || status;
 };
 
 const viewOrder = (id) => {
@@ -93,15 +84,15 @@ const totalSales = computed(() => {
 });
 
 const activeOrders = computed(() => {
-    return orders.value.filter(order => order.status === 'pending').length;
+    return orders.value.filter(order => order.status === 'Pendiente').length;
 });
 
 const completedOrders = computed(() => {
-    return orders.value.filter(order => order.status === 'paid').length;
+    return orders.value.filter(order => order.status === 'Pagado').length;
 });
 
 const cancelledOrders = computed(() => {
-    return orders.value.filter(order => order.status === 'cancelled').length;
+    return orders.value.filter(order => order.status === 'Cancelado').length;
 });
 
 // Navigation
@@ -234,7 +225,7 @@ const downloadReport = async (type) => {
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="getStatusClass(order.status)">
-                                    {{ getStatusLabel(order.status) }}
+                                    {{ order.status }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">

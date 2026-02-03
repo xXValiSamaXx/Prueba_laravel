@@ -16,7 +16,7 @@ const isLoading = ref(false);
 const form = reactive({
     customer_id: '',
     order_date: new Date().toISOString().split('T')[0],
-    status: 'pending',
+    status: 'Pendiente',
     items: []
 });
 
@@ -250,9 +250,9 @@ const cancel = () => {
                                 <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Estado del Pedido</label>
                                 <div class="relative">
                                     <select v-model="form.status" class="block w-full appearance-none bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none">
-                                        <option value="pending">Pendiente</option>
-                                        <option value="paid">Pagado</option>
-                                        <option value="cancelled">Cancelado</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Pagado">Pagado</option>
+                                        <option value="Cancelado">Cancelado</option>
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
                                         <span class="material-symbols-outlined">expand_more</span>

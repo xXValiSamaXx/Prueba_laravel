@@ -48,7 +48,7 @@ class OrderController extends Controller
                 'customer_id' => $validated['customer_id'],
                 'order_date' => $validated['order_date'],
                 'total_amount' => 0, // Will update later
-                'status' => 'pending',
+                'status' => 'Pendiente',
             ]);
 
             foreach ($validated['items'] as $item) {
@@ -91,7 +91,7 @@ class OrderController extends Controller
         $validated = $request->validate([
             'customer_id' => 'sometimes|exists:customers,id',
             'order_date' => 'sometimes|date',
-            'status' => 'sometimes|in:pending,paid,cancelled',
+            'status' => 'sometimes|in:Pendiente,Pagado,Cancelado',
             'items' => 'sometimes|array|min:1',
             'items.*.product_id' => 'required_with:items|exists:products,id',
             'items.*.quantity' => 'required_with:items|integer|min:1',
