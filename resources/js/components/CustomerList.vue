@@ -198,6 +198,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 
@@ -336,11 +337,25 @@ const handleSearch = () => {
 };
 
 const viewCustomer = (id) => {
-    router.push(`/customers/${id}`);
+    // router.push(`/customers/${id}`);
+    Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'Se esta trabajando en ello',
+        timer: 2000,
+        showConfirmButton: false
+    });
 };
 
 const editCustomer = (id) => {
-    router.push(`/customers/${id}/edit`);
+    // router.push(`/customers/${id}/edit`);
+    Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'Se esta trabajando en ello',
+        timer: 2000,
+        showConfirmButton: false
+    });
 };
 
 // Lifecycle

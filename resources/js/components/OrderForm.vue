@@ -27,8 +27,8 @@ const fetchData = async () => {
             axios.get('/api/customers'),
             axios.get('/api/products')
         ]);
-        customers.value = customersRes.data;
-        products.value = productsRes.data;
+        customers.value = customersRes.data.data;
+        products.value = productsRes.data.data;
 
         // Check if editing
         if (route.params.id) {
@@ -62,7 +62,10 @@ const loadOrder = async (id) => {
                 product_name: item.product.name, // Store name for display
                 quantity: item.quantity,
                 unit_price: parseFloat(item.unit_price),
-                stock: item.product.stock // Store current stock
+                stock: item.product.stock, // Store current stock
+                // Track original values for validation
+                original_product_id: item.product_id,
+                original_quantity: item.quantity
             }));
         } else {
              addItem();
@@ -84,12 +87,24 @@ const addItem = () => {
     form.items.push({
         product_id: '',
         quantity: 1,
-        unit_price: 0
+        unit_price: 0,
+        original_product_id: null,
+        original_quantity: 0
     });
 };
 
 const removeItem = (index) => {
     form.items.splice(index, 1);
+};
+
+const incrementQuantity = (item) => {
+    item.quantity = (item.quantity || 0) + 1;
+};
+
+const decrementQuantity = (item) => {
+    if (item.quantity > 1) {
+        item.quantity--;
+    }
 };
 
 const onProductChange = (item) => {
@@ -113,10 +128,20 @@ const validateStock = (item) => {
 };
 
 const isStockInsufficient = (item) => {
-    // In edit mode, use the stock stored in the item
-    // In create mode, get stock from products list
-    const stock = isEditing.value ? (item.stock || 0) : getProductStock(item.product_id);
-    return item.product_id && item.quantity > stock;
+    if (!item.product_id) return false;
+
+    // Get the base available stock from the product list (this is the "remaining" stock in DB)
+    let availableStock = getProductStock(item.product_id);
+
+    // If we are editing and this item is the same product as originally loaded,
+    // we must add back the original quantity to know the "total" potential limit for this specific order.
+    // Example: Stock=5, Original Order Qty=5. "Available" in DB is 0. 
+    // But for this order, we can go up to 5. Limit should be 0 + 5 = 5.
+    if (isEditing.value && item.product_id === item.original_product_id) {
+        availableStock += (item.original_quantity || 0);
+    }
+
+    return item.quantity > availableStock;
 };
 
 const calculateSubtotal = (item) => {
@@ -290,13 +315,29 @@ const cancel = () => {
                                 
                                 <div class="col-span-2">
                                     <label class="block md:hidden text-xs font-bold text-slate-500 uppercase mb-1">Cantidad</label>
-                                    <input 
-                                        v-model.number="item.quantity" 
-                                        class="block w-full text-center bg-white dark:bg-slate-900 border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none"
-                                        :class="isStockInsufficient(item) ? 'border-red-500 text-red-600 focus:border-red-500 focus:ring-red-200' : 'border-slate-200 dark:border-slate-700'"
-                                        min="1" 
-                                        type="number"
-                                    />
+                                    <div class="flex items-center justify-center">
+                                        <button 
+                                            @click="decrementQuantity(item)"
+                                            type="button"
+                                            class="w-8 h-9 flex items-center justify-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-l-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-400"
+                                        >
+                                            <span class="material-symbols-outlined text-[16px]">remove</span>
+                                        </button>
+                                        <input 
+                                            v-model.number="item.quantity" 
+                                            class="block w-full text-center bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-700 h-9 text-sm focus:ring-0 outline-none min-w-[3rem]"
+                                            :class="isStockInsufficient(item) ? 'border-y-red-500 text-red-600 bg-red-50 dark:bg-red-900/10' : ''"
+                                            min="1" 
+                                            type="number"
+                                        />
+                                        <button 
+                                            @click="incrementQuantity(item)"
+                                            type="button"
+                                            class="w-8 h-9 flex items-center justify-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-r-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-400"
+                                        >
+                                            <span class="material-symbols-outlined text-[16px]">add</span>
+                                        </button>
+                                    </div>
                                     <div v-if="isStockInsufficient(item)" class="text-[10px] text-red-500 mt-1 font-bold text-center">
                                         Excede Stock
                                     </div>
