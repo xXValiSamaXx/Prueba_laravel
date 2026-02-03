@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colores personalizados */
+    --color-primary: #0f766e;
+    --color-navy: #0f172a;
+    --color-soft-gray: #f8fafc;
+    --color-background-light: #f8fafc;
+    --color-background-dark: #0f172a;
+
+    /* Fuente personalizada */
+    --font-family-sans: "Inter", sans-serif;
+}
+
+@layer base {
+    body {
+        @apply font-sans antialiased;
+    }
+}
