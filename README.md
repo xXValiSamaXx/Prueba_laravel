@@ -189,7 +189,3 @@ composer test
 ## 👨‍💻 Autor
 
 Ángel Avilés
-
-## 📄 Licencia
-
-Este proyecto es de código abierto bajo la licencia MIT.
