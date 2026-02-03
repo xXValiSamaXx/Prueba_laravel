@@ -9,6 +9,8 @@ import OrderForm from './components/OrderForm.vue';
 import OrderDetail from './components/OrderDetail.vue';
 import CustomerList from './components/CustomerList.vue';
 import ProductList from './components/ProductList.vue';
+import Reports from './components/Reports.vue';
+
 
 const routes = [
     {
@@ -60,6 +62,11 @@ const routes = [
                 path: 'products',
                 name: 'Products',
                 component: ProductList
+            },
+            {
+                path: 'reports',
+                name: 'Reports',
+                component: Reports
             }
         ]
     }
