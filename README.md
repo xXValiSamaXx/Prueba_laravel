@@ -40,7 +40,7 @@ Sistema web desarrollado con Laravel y Vue.js para la gestión de órdenes de co
 - Composer
 - Node.js >= 18
 - NPM o Yarn
-- MySQL o SQLite
+- MySQL
 
 ### Pasos de Instalación
 
@@ -188,4 +188,4 @@ composer test
 
 ## 👨‍💻 Autor
 
-Ángel Avilés
+Angel Aviles

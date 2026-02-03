@@ -2,7 +2,7 @@
     <div class="p-8 overflow-y-auto flex-1 custom-scrollbar">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Sales Reports & Analytics</h1>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Reportes de Ventas y Analíticas</h1>
                 <p class="text-slate-500 text-sm mt-1">Monitorea el rendimiento de ventas y tendencias en tiempo real.</p>
             </div>
             <div class="flex items-center gap-3">
@@ -14,14 +14,14 @@
                 <div class="relative group">
                     <button @click="showExportMenu = !showExportMenu" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-teal-700 transition-all text-sm font-semibold shadow-sm">
                         <span class="material-symbols-outlined text-[20px]">download</span>
-                        Export Report
+                        Exportar Reporte
                     </button>
                     <div v-if="showExportMenu" class="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10">
-                        <button class="w-full text-left px-4 py-2 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm text-red-500">picture_as_pdf</span> PDF Document
+                        <button @click="showExportAlert" class="w-full text-left px-4 py-2 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm text-red-500">picture_as_pdf</span> Documento PDF
                         </button>
-                        <button class="w-full text-left px-4 py-2 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm text-green-600">table_view</span> Excel Sheet
+                        <button @click="showExportAlert" class="w-full text-left px-4 py-2 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm text-green-600">table_view</span> Hoja de Excel
                         </button>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     </div>
                     <span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">+12.5%</span>
                 </div>
-                <p class="text-slate-500 text-sm font-medium">Total Revenue</p>
+                <p class="text-slate-500 text-sm font-medium">Ingresos Totales</p>
                 <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">$128,430.00</h3>
             </div>
             <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
@@ -46,7 +46,7 @@
                     </div>
                     <span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">+8.2%</span>
                 </div>
-                <p class="text-slate-500 text-sm font-medium">Order Volume</p>
+                <p class="text-slate-500 text-sm font-medium">Volumen de Pedidos</p>
                 <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">1,452</h3>
             </div>
             <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
@@ -56,7 +56,7 @@
                     </div>
                     <span class="text-xs font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">-2.4%</span>
                 </div>
-                <p class="text-slate-500 text-sm font-medium">Average Order Value</p>
+                <p class="text-slate-500 text-sm font-medium">Valor Promedio del Pedido</p>
                 <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">$88.45</h3>
             </div>
             <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
@@ -66,7 +66,7 @@
                     </div>
                     <span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">+15.1%</span>
                 </div>
-                <p class="text-slate-500 text-sm font-medium">New Customers</p>
+                <p class="text-slate-500 text-sm font-medium">Nuevos Clientes</p>
                 <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">328</h3>
             </div>
         </div>
@@ -75,15 +75,15 @@
             <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div class="flex items-center justify-between mb-8">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Revenue Over Time</h2>
-                        <p class="text-xs text-slate-500">Sales performance across selected period</p>
+                        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Ingresos en el Tiempo</h2>
+                        <p class="text-xs text-slate-500">Rendimiento de ventas en el periodo seleccionado</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                            <span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Current
+                            <span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Actual
                         </span>
                         <span class="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                            <span class="w-2.5 h-2.5 rounded-full bg-slate-200 dark:bg-slate-700"></span> Previous
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-200 dark:bg-slate-700"></span> Anterior
                         </span>
                     </div>
                 </div>
@@ -108,8 +108,8 @@
             </div>
             <div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div class="mb-8">
-                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Sales by Category</h2>
-                    <p class="text-xs text-slate-500">Revenue distribution by product type</p>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Ventas por Categoría</h2>
+                    <p class="text-xs text-slate-500">Distribución de ingresos por tipo de producto</p>
                 </div>
                 <div class="relative flex justify-center mb-8">
                     <div class="w-48 h-48 rounded-full border-[20px] border-slate-100 dark:border-slate-800 relative">
@@ -125,21 +125,21 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-primary"></span>
-                            <span class="text-sm text-slate-600 dark:text-slate-400">Software Licenses</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Licencias de Software</span>
                         </div>
                         <span class="text-sm font-bold">58%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                            <span class="text-sm text-slate-600 dark:text-slate-400">Cloud Hosting</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Hosting en la Nube</span>
                         </div>
                         <span class="text-sm font-bold">24%</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-slate-400"></span>
-                            <span class="text-sm text-slate-600 dark:text-slate-400">Consulting Services</span>
+                            <span class="text-sm text-slate-600 dark:text-slate-400">Servicios de Consultoría</span>
                         </div>
                         <span class="text-sm font-bold">18%</span>
                     </div>
@@ -149,19 +149,19 @@
 
         <div class="mt-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Recent Transactions</h2>
-                <button class="text-primary text-sm font-bold hover:underline">View All</button>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white">Transacciones Recientes</h2>
+                <button class="text-primary text-sm font-bold hover:underline">Ver Todo</button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 uppercase text-xs font-bold">
                         <tr>
-                            <th class="px-6 py-4">Order ID</th>
-                            <th class="px-6 py-4">Customer</th>
-                            <th class="px-6 py-4 text-center">Date</th>
-                            <th class="px-6 py-4 text-center">Items</th>
-                            <th class="px-6 py-4 text-right">Amount</th>
-                            <th class="px-6 py-4 text-center">Status</th>
+                            <th class="px-6 py-4">ID Orden</th>
+                            <th class="px-6 py-4">Cliente</th>
+                            <th class="px-6 py-4 text-center">Fecha</th>
+                            <th class="px-6 py-4 text-center">Artículos</th>
+                            <th class="px-6 py-4 text-right">Monto</th>
+                            <th class="px-6 py-4 text-center">Estado</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -204,8 +204,20 @@
 
 <script setup>
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
 
 const showExportMenu = ref(false);
+
+const showExportAlert = () => {
+    showExportMenu.value = false;
+    Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'Se esta trabajando en ello',
+        timer: 2000,
+        showConfirmButton: false
+    });
+};
 </script>
 
 <style scoped>

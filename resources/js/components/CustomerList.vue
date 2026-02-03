@@ -6,7 +6,7 @@
                     <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Listado de Clientes</h1>
                     <p class="text-sm text-slate-500 mt-1">Administra y gestiona la base de datos de tus clientes registrados.</p>
                 </div>
-                <button class="flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-teal-700 transition-all font-semibold shadow-md shadow-primary/20">
+                <button @click="showAddCustomer" class="flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-teal-700 transition-all font-semibold shadow-md shadow-primary/20">
                     <span class="material-symbols-outlined text-[20px]">person_add</span>
                     Agregar Nuevo Cliente
                 </button>
@@ -349,6 +349,16 @@ const viewCustomer = (id) => {
 
 const editCustomer = (id) => {
     // router.push(`/customers/${id}/edit`);
+    Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'Se esta trabajando en ello',
+        timer: 2000,
+        showConfirmButton: false
+    });
+};
+
+const showAddCustomer = () => {
     Swal.fire({
         icon: 'info',
         title: 'Próximamente',

@@ -12,6 +12,9 @@
     --font-family-sans: "Inter", sans-serif;
 }
 
+/* Force class-based dark mode */
+@variant dark (&:where(.dark, .dark *));
+
 @layer base {
     body {
         @apply font-sans antialiased;

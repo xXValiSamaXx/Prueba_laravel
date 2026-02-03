@@ -6,7 +6,7 @@
                 <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Listado de Productos</h1>
                 <p class="text-sm text-slate-500 mt-1">Gestiona tu inventario, precios y niveles de stock de forma centralizada.</p>
             </div>
-            <button class="flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-teal-700 transition-all font-semibold shadow-md shadow-primary/20">
+            <button @click="showAddProduct" class="flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-teal-700 transition-all font-semibold shadow-md shadow-primary/20">
                 <span class="material-symbols-outlined text-[20px]">add_box</span>
                 Agregar Nuevo Producto
             </button>
@@ -299,6 +299,16 @@ const viewProduct = (id) => {
 const editProduct = (id) => {
     // router.push(`/products/${id}/edit`);
      Swal.fire({
+        icon: 'info',
+        title: 'Próximamente',
+        text: 'Se esta trabajando en ello',
+        timer: 2000,
+        showConfirmButton: false
+    });
+};
+
+const showAddProduct = () => {
+    Swal.fire({
         icon: 'info',
         title: 'Próximamente',
         text: 'Se esta trabajando en ello',

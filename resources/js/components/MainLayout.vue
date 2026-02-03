@@ -15,23 +15,19 @@ const navigation = [
 ];
 
 const checkDarkMode = () => {
-    // Force light mode by default, only use dark if explicitly set
-    if (localStorage.theme === 'dark') {
+    // Check local storage or system preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
         isDarkMode.value = true;
     } else {
         document.documentElement.classList.remove('dark');
         isDarkMode.value = false;
-        // Set light as default if not set
-        if (!localStorage.theme) {
-            localStorage.theme = 'light';
-        }
     }
 };
 
 const toggleDarkMode = () => {
     isDarkMode.value = !isDarkMode.value;
-    localStorage.setItem('darkMode', isDarkMode.value);
+    
     if (isDarkMode.value) {
         document.documentElement.classList.add('dark');
         localStorage.theme = 'dark';
