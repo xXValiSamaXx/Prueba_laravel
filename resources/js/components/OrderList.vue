@@ -40,6 +40,15 @@ const getStatusClass = (status) => {
     }
 };
 
+const getStatusLabel = (status) => {
+    const labels = {
+        'pending': 'Pendiente',
+        'paid': 'Pagado',
+        'cancelled': 'Cancelado'
+    };
+    return labels[status] || status;
+};
+
 const viewOrder = (id) => {
     router.push({ name: 'ViewOrder', params: { id } });
 };
@@ -225,7 +234,7 @@ const downloadReport = async (type) => {
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="getStatusClass(order.status)">
-                                    {{ order.status }}
+                                    {{ getStatusLabel(order.status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
